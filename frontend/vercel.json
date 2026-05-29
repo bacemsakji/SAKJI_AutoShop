@@ -13,9 +13,6 @@
     }
   ],
   "env": {
-    "VITE_API_URL": {
-      "description": "Backend API URL (e.g., https://your-backend.supabase.co or Railway/Render URL)",
-      "value": "https://your-backend-url.com"
-    }
+    "VITE_API_URL": "https://your-backend-url.com"
   }
 }
