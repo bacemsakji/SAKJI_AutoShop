@@ -23,7 +23,7 @@ const Appointments: React.FC = () => {
   const [successData, setSuccessData] = useState<AppointmentResponse | null>(null);
   const [apiError, setApiError] = useState<string | null>(null);
 
-  const { register, handleSubmit, watch, control, formState: { errors } } = useForm<CreateAppointmentPayload>({
+  const { register, handleSubmit, watch, control, setValue, formState: { errors } } = useForm<CreateAppointmentPayload>({
     defaultValues: {
       carBrand: '',
       carModel: '',
@@ -35,6 +35,10 @@ const Appointments: React.FC = () => {
   });
 
   const selectedBrand = watch('carBrand');
+
+  useEffect(() => {
+    setValue('carModel', '');
+  }, [selectedBrand, setValue]);
 
   useEffect(() => {
     const fetchServices = async () => {
