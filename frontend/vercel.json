@@ -5,11 +5,17 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://sakji-autoshop-api.railway.app/api/$1"
+      "destination": "$VITE_API_URL/api/$1"
     },
     {
       "source": "/(.*)",
       "destination": "/index.html"
     }
-  ]
+  ],
+  "env": {
+    "VITE_API_URL": {
+      "description": "Backend API URL (e.g., https://your-backend.supabase.co or Railway/Render URL)",
+      "value": "https://your-backend-url.com"
+    }
+  }
 }

@@ -1,11 +1,13 @@
-import { apiClient } from './client';
+import axios from 'axios';
 
 export interface ChatMessage {
-  role: 'user' | 'assistant';
+  role: 'user' | 'model' | 'assistant';
   content: string;
 }
 
-export const sendChatMessages = async (messages: ChatMessage[]): Promise<string> => {
-  const response = await apiClient.post<{ data: { reply: string } }>('/api/chat', { messages });
-  return response.data.data.reply;
-};
+export async function sendChatMessage(messages: ChatMessage[]): Promise<string> {
+  const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/chat`, {
+    messages,
+  });
+  return data.data.reply;
+}

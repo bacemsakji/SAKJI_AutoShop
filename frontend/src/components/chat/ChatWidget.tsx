@@ -1,14 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import styles from './ChatWidget.module.css';
-import { sendChatMessages, ChatMessage } from '../../api/chat';
+import { useChat } from '../../hooks/useChat';
 
 const ChatWidget: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    { role: 'assistant', content: 'Hi there! Describe your car problem, and I will try to diagnose it for you.' }
-  ]);
-  const [inputValue, setInputValue] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const { messages, isLoading, error, sendMessage, clearChat } = useChat();
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [inputValue, setInputValue] = React.useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -25,23 +22,8 @@ const ChatWidget: React.FC = () => {
     e.preventDefault();
     if (!inputValue.trim() || isLoading) return;
 
-    const userMsg: ChatMessage = { role: 'user', content: inputValue.trim() };
-    const newMessages = [...messages, userMsg];
-    
-    setMessages(newMessages);
+    await sendMessage(inputValue.trim());
     setInputValue('');
-    setIsLoading(true);
-
-    try {
-      // Send context of the whole conversation
-      const reply = await sendChatMessages(newMessages);
-      setMessages([...newMessages, { role: 'assistant', content: reply }]);
-    } catch (err) {
-      console.error('Chat error', err);
-      setMessages([...newMessages, { role: 'assistant', content: 'Sorry, I am having trouble connecting to the network right now. Please try again later or call us directly.' }]);
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   return (
@@ -54,15 +36,16 @@ const ChatWidget: React.FC = () => {
           </div>
           
           <div className={styles.messages}>
-            {messages.map((msg, idx) => (
+            {messages.map((msg) => (
               <div 
-                key={idx} 
+                key={msg.id} 
                 className={`${styles.message} ${msg.role === 'user' ? styles.userMessage : styles.assistantMessage}`}
               >
                 {msg.content}
               </div>
             ))}
             {isLoading && <div className={styles.loading}>Assistant is typing...</div>}
+            {error && <div className={styles.error}>{error}</div>}
             <div ref={messagesEndRef} />
           </div>
 

@@ -5,22 +5,18 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import { z } from 'zod';
 
-import servicesRouter from './routes/services';
-import testimonialsRouter from './routes/testimonials';
-import appointmentsRouter from './routes/appointments';
 import chatRouter from './routes/chat';
 import { errorHandler } from './middleware/errorHandler';
 
 // Load environment variables
-dotenv.config();
+dotenv.config({ path: '.env' });
 
 // Validate environment variables on startup
 const envSchema = z.object({
   PORT: z.string().default('3001'),
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
-  DATABASE_URL: z.string().min(1, 'DATABASE_URL is required'),
   FRONTEND_URL: z.string().url('FRONTEND_URL must be a valid URL').optional(),
-  ANTHROPIC_API_KEY: z.string().optional(),
+  OPENROUTER_API_KEY: z.string().min(10, 'OPENROUTER_API_KEY is missing or invalid'),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);
@@ -70,9 +66,6 @@ const globalLimiter = rateLimit({
 app.use(globalLimiter);
 
 // Mount API routes
-app.use('/api/services', servicesRouter);
-app.use('/api/testimonials', testimonialsRouter);
-app.use('/api/appointments', appointmentsRouter);
 app.use('/api/chat', chatRouter);
 
 // Health check endpoint

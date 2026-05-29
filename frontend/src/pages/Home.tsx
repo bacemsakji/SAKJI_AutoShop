@@ -2,132 +2,128 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Home.module.css';
 import Button from '../components/ui/Button';
-import { getTestimonials, Testimonial } from '../api/testimonials';
-import { getServices, Service } from '../api/services';
+import { getParts, Part } from '../data/parts';
+import { useLanguage } from '../context/LanguageContext';
 
 const Home: React.FC = () => {
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [topServices, setTopServices] = useState<Service[]>([]);
+  const [featuredParts, setFeaturedParts] = useState<Part[]>([]);
+  const { t } = useLanguage();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [tests, servs] = await Promise.all([
-          getTestimonials(),
-          getServices()
-        ]);
-        setTestimonials(tests.slice(0, 3)); // Only show top 3
-        setTopServices(servs.slice(0, 4)); // Only show top 4 services
-      } catch (err) {
-        console.error('Failed to load home data', err);
-      }
-    };
-    fetchData();
+    // Pick 4 diverse popular parts
+    const allParts = getParts();
+    const selected = [
+      allParts.find(p => p.id === 'PT-001'),
+      allParts.find(p => p.id === 'PT-008'),
+      allParts.find(p => p.id === 'PT-057'),
+      allParts.find(p => p.id === 'PT-098'),
+    ].filter(Boolean) as Part[];
+    setFeaturedParts(selected);
   }, []);
 
   return (
     <div>
-      {/* Hero Section */}
+      {/* ── Hero Section ── */}
       <section className={styles.hero}>
         <div className={styles.heroBg}></div>
         <div className={`container ${styles.heroContent}`}>
+          <div className={styles.heroBadge}>{t('hero_badge')}</div>
           <h1 className={styles.heroTitle}>
-            PRECISION ENGINEERING FOR YOUR <span>OPEL & FORD</span>
+            {t('hero_title_prefix')} <span>{t('hero_title_parts')}</span>
           </h1>
           <p className={styles.heroSubtitle}>
-            Specialized automotive repair and maintenance by certified experts. 
-            We use advanced diagnostic tools to get you back on the road safely and quickly.
+            {t('hero_subtitle')}
           </p>
+          <div className={styles.heroStats}>
+            <div className={styles.heroStat}><span>100+</span><p>{t('hero_stat_parts')}</p></div>
+            <div className={styles.heroStat}><span>8</span><p>{t('hero_stat_models')}</p></div>
+            <div className={styles.heroStat}><span>100%</span><p>{t('hero_stat_quality')}</p></div>
+          </div>
           <div className={styles.heroActions}>
-            <Link to="/appointments">
-              <Button variant="primary">Book Appointment</Button>
+            <Link to="/parts">
+              <Button variant="primary">{t('hero_btn_browse')}</Button>
             </Link>
-            <Link to="/services">
-              <Button variant="outline">View Services</Button>
-            </Link>
+            <a href="#contact-footer">
+              <Button variant="outline">{t('hero_btn_contact')}</Button>
+            </a>
           </div>
         </div>
       </section>
 
-      {/* Services Section */}
-      <section className="container">
+      {/* ── Brand Selection Showcase ── */}
+      <section className={`${styles.brandsSection} container`}>
         <div className={styles.sectionTitle}>
-          <h2>Expert Services</h2>
-          <p>From routine maintenance to complex engine repairs, we handle it all with industrial precision.</p>
+          <h2>{t('brand_section_title')}</h2>
+          <p>{t('brand_section_subtitle')}</p>
         </div>
-        <div className={styles.servicesGrid}>
-          {topServices.map(service => (
-            <div key={service.id} className={styles.serviceCard}>
-              <div className={styles.serviceIcon}>🔧</div>
-              <h3>{service.name}</h3>
-              <p>{service.shortDescription}</p>
-              <Link to={`/appointments?serviceId=${service.id}`}>
-                <span style={{ color: 'var(--color-accent)', fontWeight: 500, fontSize: 'var(--text-sm)' }}>Book Now →</span>
-              </Link>
-            </div>
-          ))}
-        </div>
-        <div style={{ textAlign: 'center' }}>
-          <Link to="/services">
-            <Button variant="ghost">View All Services</Button>
+        <div className={styles.brandsGrid}>
+          <Link to="/parts?brand=Opel" className={`${styles.brandCard} ${styles.opelCard}`}>
+            <div className={styles.brandLogoText}>OPEL</div>
+            <h3>Opel Parts</h3>
+            <p>{t('brand_opel_desc')}</p>
+            <span className={styles.exploreLink}>{t('brand_explore_opel')}</span>
+          </Link>
+          <Link to="/parts?brand=Ford" className={`${styles.brandCard} ${styles.fordCard}`}>
+            <div className={styles.brandLogoText}>FORD</div>
+            <h3>Ford Parts</h3>
+            <p>{t('brand_ford_desc')}</p>
+            <span className={styles.exploreLink}>{t('brand_explore_ford')}</span>
           </Link>
         </div>
       </section>
 
-      {/* Why Us Section */}
-      <section className={styles.whyUsSection}>
+      {/* ── Featured Parts Catalogue ── */}
+      <section className={styles.featuredSection}>
         <div className="container">
           <div className={styles.sectionTitle}>
-            <h2>Why Choose SAKJI</h2>
-            <p>We are committed to excellence, transparency, and the highest standards of automotive care.</p>
+            <h2>{t('featured_parts_title')}</h2>
+            <p>{t('featured_parts_subtitle')}</p>
           </div>
-          <div className={styles.whyUsGrid}>
-            <div className={styles.whyUsCard}>
-              <h3><span>01</span> Certified Experts</h3>
-              <p>Our mechanics are specialized in Opel and Ford architectures, ensuring accurate diagnostics and flawless repairs.</p>
-            </div>
-            <div className={styles.whyUsCard}>
-              <h3><span>02</span> Original Parts</h3>
-              <p>We use only OEM or highest-grade aftermarket parts to guarantee the longevity and performance of your vehicle.</p>
-            </div>
-            <div className={styles.whyUsCard}>
-              <h3><span>03</span> Transparent Pricing</h3>
-              <p>No hidden fees. You get a clear, detailed breakdown of all costs before any work begins.</p>
-            </div>
+          <div className={styles.partsGrid}>
+            {featuredParts.map(part => (
+              <div key={part.id} className={styles.partCard}>
+                <div className={styles.partHeader}>
+                  <span className={styles.partCategory}>{part.category}</span>
+                </div>
+                <h3>{part.name}</h3>
+                <p className={styles.partModel}>{t('parts_brand')}: {part.brand} {part.model}</p>
+                <div className={styles.partOem}>{t('parts_oem')}: <code>{part.oemNumber}</code></div>
+                <div className={styles.partFooter}>
+                  <span className={styles.priceTag}>{part.price} TND</span>
+                  <Link to={`/parts?brand=${part.brand}`}>
+                    <span className={styles.viewLink}>{t('parts_view_details')} →</span>
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ textAlign: 'center', marginTop: '40px' }}>
+            <Link to="/parts">
+              <Button variant="ghost">{t('featured_btn_all')}</Button>
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      {testimonials.length > 0 && (
-        <section className={styles.testimonialsSection}>
-          <div className="container">
-            <div className={styles.sectionTitle}>
-              <h2>Client Testimonials</h2>
-              <p>Don't just take our word for it. Here's what our customers have to say.</p>
+      {/* ── Location / Contact Banner ── */}
+      <section className={styles.ctaBanner}>
+        <div className="container">
+          <div className={styles.ctaBannerInner}>
+            <div>
+              <h2>{t('cta_title')}</h2>
+              <p>{t('cta_subtitle')}</p>
             </div>
-            <div className={styles.testimonialsGrid}>
-              {testimonials.map(test => (
-                <div key={test.id} className={styles.testimonialCard}>
-                  <div className={styles.stars}>
-                    {'★'.repeat(test.rating)}{'☆'.repeat(5 - test.rating)}
-                  </div>
-                  <p className={styles.comment}>"{test.comment}"</p>
-                  <div className={styles.client}>
-                    <div className={styles.clientAvatar}>
-                      {test.clientName.charAt(0)}
-                    </div>
-                    <div className={styles.clientInfo}>
-                      <h4>{test.clientName}</h4>
-                      <p>{test.carModel || 'Customer'}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
+            <div className={styles.ctaBannerActions}>
+              <a href="https://www.google.com/maps/place/RJCR%2BM9G,+Rue+de+l'Abreuvoir,+Sousse/@35.8214893,10.6411668,97m/data=!3m1!1e3!4m6!3m5!1s0x1302756d4170e21f:0xf8a4cffecb154492!8m2!3d35.8216288!4d10.64097!16s%2Fg%2F11jr6sq516?entry=ttu&g_ep=EgoyMDI2MDUyNi4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer">
+                <Button variant="primary">{t('cta_btn_contact')}</Button>
+              </a>
+              <Link to="/parts">
+                <Button variant="outline">{t('cta_btn_browse')}</Button>
+              </Link>
             </div>
           </div>
-        </section>
-      )}
+        </div>
+      </section>
     </div>
   );
 };

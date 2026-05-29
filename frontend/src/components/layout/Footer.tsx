@@ -1,46 +1,49 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styles from './Footer.module.css';
+import logoImg from '../../assets/logo.png';
+import { useLanguage } from '../../context/LanguageContext';
 
 const Footer: React.FC = () => {
+  const { t } = useLanguage();
+
   return (
-    <footer className={styles.footer}>
+    <footer className={styles.footer} id="contact-footer">
       <div className={`container ${styles.footerGrid}`}>
         <div className={styles.brandCol}>
           <div className={styles.logo}>
-            <span className={styles.logoPrimary}>SAKJI</span>
-            <span className={styles.logoSecondary}>AutoShop</span>
+            <img src={logoImg} alt="STE SAKJI AutoShop" className={styles.logoImg} />
           </div>
           <p className={styles.tagline}>
-            Professional automotive repair and maintenance. Your car, our expertise.
+            {t('footer_tagline')}
           </p>
         </div>
-        
+
         <div className={styles.linksCol}>
-          <h3>Quick Links</h3>
+          <h3>{t('footer_quick_links')}</h3>
           <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/services">Services</a></li>
-            <li><a href="/appointments">Book Appointment</a></li>
+            <li><Link to="/">{t('nav_home')}</Link></li>
+            <li><Link to="/parts">{t('nav_parts')}</Link></li>
           </ul>
         </div>
-        
+
         <div className={styles.contactCol}>
-          <h3>Contact & Hours</h3>
-          <p>123 Auto Avenue, Industrial Zone</p>
-          <p>+216 70 123 456</p>
+          <h3>{t('footer_contact_hours')}</h3>
+          <p>{t('footer_address')}</p>
+          <p style={{ color: 'var(--color-accent)', fontWeight: 600 }}>+216 98 228 469</p>
           <table className={styles.hoursTable}>
             <tbody>
               <tr>
-                <td>Mon - Fri:</td>
-                <td>08:00 - 18:00</td>
+                <td>{t('hours_mon_fri')}</td>
+                <td>08:00 – 18:00</td>
               </tr>
               <tr>
-                <td>Saturday:</td>
-                <td>08:00 - 14:00</td>
+                <td>{t('hours_sat')}</td>
+                <td>08:00 – 14:00</td>
               </tr>
               <tr>
-                <td>Sunday:</td>
-                <td>Closed</td>
+                <td>{t('hours_sun')}</td>
+                <td>{t('hours_closed')}</td>
               </tr>
             </tbody>
           </table>
@@ -48,7 +51,7 @@ const Footer: React.FC = () => {
       </div>
       <div className={styles.bottomBar}>
         <div className="container">
-          <p>&copy; {new Date().getFullYear()} SAKJI AutoShop. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} {t('footer_rights')}</p>
         </div>
       </div>
     </footer>
@@ -56,3 +59,4 @@ const Footer: React.FC = () => {
 };
 
 export default Footer;
+

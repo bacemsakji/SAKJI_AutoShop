@@ -18,19 +18,9 @@
   margin-bottom: 16px;
 }
 
-.logoPrimary {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 28px;
-  color: var(--color-accent);
-  letter-spacing: 1px;
-}
-
-.logoSecondary {
-  font-family: var(--font-body);
-  font-weight: 400;
-  font-size: 16px;
-  color: var(--color-white);
+.logoImg {
+  height: 120px;
+  object-fit: contain;
 }
 
 .tagline {
@@ -41,7 +31,7 @@
 .linksCol h3, .contactCol h3 {
   font-size: var(--text-lg);
   margin-bottom: 24px;
-  color: var(--color-white);
+  color: var(--color-text);
 }
 
 .linksCol ul {
@@ -78,7 +68,7 @@
 
 .hoursTable td:last-child {
   text-align: right;
-  color: var(--color-white);
+  color: var(--color-text);
 }
 
 .bottomBar {

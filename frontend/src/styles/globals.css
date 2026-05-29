@@ -1,17 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@400&display=swap');
 
 :root {
-  --color-bg:         #0D0D0D;   /* near-black background */
-  --color-surface:    #161616;   /* card / section surfaces */
-  --color-surface-2:  #1F1F1F;   /* elevated surfaces, inputs */
-  --color-border:     #2A2A2A;   /* subtle borders */
-  --color-accent:     #E8A020;   /* amber/gold — primary CTA, highlights */
-  --color-accent-dim: #B37C18;   /* hover state for accent */
-  --color-text:       #F0EDE8;   /* primary text — warm white */
-  --color-text-muted: #8A8680;   /* secondary text, labels */
-  --color-text-dim:   #4A4845;   /* disabled, placeholder */
-  --color-success:    #3A7D44;
-  --color-error:      #C0392B;
+  --color-bg:         #FAFAFA;   /* clean off-white background */
+  --color-surface:    #FFFFFF;   /* card / section surfaces */
+  --color-surface-2:  #F3F4F6;   /* elevated surfaces, inputs */
+  --color-border:     #E5E7EB;   /* subtle borders */
+  --color-accent:     #D97706;   /* amber/gold — primary CTA, highlights */
+  --color-accent-dim: #B45309;   /* hover state for accent */
+  --color-text:       #111827;   /* primary text — dark slate */
+  --color-text-muted: #4B5563;   /* secondary text, labels */
+  --color-text-dim:   #9CA3AF;   /* disabled, placeholder */
+  --color-success:    #10B981;
+  --color-error:      #EF4444;
   --color-white:      #FFFFFF;
 
   --text-xs:   0.75rem;
@@ -46,6 +46,7 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding-top: 90px;
 }
 
 h1, h2, h3, h4, h5, h6 {

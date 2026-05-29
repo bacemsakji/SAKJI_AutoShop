@@ -1,14 +1,3 @@
-import { apiClient } from './client';
-
-export interface Testimonial {
-  id: number;
-  clientName: string;
-  carModel: string | null;
-  rating: number;
-  comment: string;
-}
-
-export const getTestimonials = async (): Promise<Testimonial[]> => {
-  const response = await apiClient.get<{ data: Testimonial[] }>('/api/testimonials');
-  return response.data.data;
-};
+// Static data — re-exports from data layer so page components need no changes
+export type { Testimonial } from '../data/testimonials';
+export { getTestimonials } from '../data/testimonials';
