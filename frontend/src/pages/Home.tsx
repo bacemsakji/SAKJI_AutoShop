@@ -1,25 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Home.module.css';
 import Button from '../components/ui/Button';
-import { getParts, Part } from '../data/parts';
 import { useLanguage } from '../context/LanguageContext';
 
 const Home: React.FC = () => {
-  const [featuredParts, setFeaturedParts] = useState<Part[]>([]);
   const { t } = useLanguage();
-
-  useEffect(() => {
-    // Pick 4 diverse popular parts
-    const allParts = getParts();
-    const selected = [
-      allParts.find(p => p.id === 'PT-001'),
-      allParts.find(p => p.id === 'PT-008'),
-      allParts.find(p => p.id === 'PT-057'),
-      allParts.find(p => p.id === 'PT-098'),
-    ].filter(Boolean) as Part[];
-    setFeaturedParts(selected);
-  }, []);
 
   return (
     <div>
@@ -69,39 +55,6 @@ const Home: React.FC = () => {
             <p>{t('brand_ford_desc')}</p>
             <span className={styles.exploreLink}>{t('brand_explore_ford')}</span>
           </Link>
-        </div>
-      </section>
-
-      {/* ── Featured Parts Catalogue ── */}
-      <section className={styles.featuredSection}>
-        <div className="container">
-          <div className={styles.sectionTitle}>
-            <h2>{t('featured_parts_title')}</h2>
-            <p>{t('featured_parts_subtitle')}</p>
-          </div>
-          <div className={styles.partsGrid}>
-            {featuredParts.map(part => (
-              <div key={part.id} className={styles.partCard}>
-                <div className={styles.partHeader}>
-                  <span className={styles.partCategory}>{part.category}</span>
-                </div>
-                <h3>{part.name}</h3>
-                <p className={styles.partModel}>{t('parts_brand')}: {part.brand} {part.model}</p>
-                <div className={styles.partOem}>{t('parts_oem')}: <code>{part.oemNumber}</code></div>
-                <div className={styles.partFooter}>
-                  <span className={styles.priceTag}>{part.price} TND</span>
-                  <Link to={`/parts?brand=${part.brand}`}>
-                    <span className={styles.viewLink}>{t('parts_view_details')} →</span>
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div style={{ textAlign: 'center', marginTop: '40px' }}>
-            <Link to="/parts">
-              <Button variant="ghost">{t('featured_btn_all')}</Button>
-            </Link>
-          </div>
         </div>
       </section>
 
