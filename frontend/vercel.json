@@ -8,7 +8,7 @@
       "destination": "$VITE_API_URL/api/$1"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!sitemap.xml|robots.txt).*)",
       "destination": "/index.html"
     }
   ]
