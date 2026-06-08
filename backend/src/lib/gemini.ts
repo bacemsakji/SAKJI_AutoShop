@@ -20,4 +20,4 @@ Available services: Engine Diagnostics, Oil Change, Brake Service, Electrical Re
 
 export const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || '';
 export const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
-export const MODEL = 'google/gemini-3.5-flash-001';
+export const MODEL = 'google/gemini-3.5-flash';
