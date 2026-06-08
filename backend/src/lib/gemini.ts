@@ -20,4 +20,4 @@ Available services: Engine Diagnostics, Oil Change, Brake Service, Electrical Re
 
 export const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || '';
 export const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
-export const MODEL = 'deepseek/deepseek-r1:free';
+export const MODEL = 'openrouter/free';
